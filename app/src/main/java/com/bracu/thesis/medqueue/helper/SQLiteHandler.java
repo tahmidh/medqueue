@@ -1,9 +1,13 @@
 package com.bracu.thesis.medqueue.helper;
 
+import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
+
+import java.util.HashMap;
 
 /**
  * Created by Tahmid on 03-Aug-15.
@@ -42,6 +46,54 @@ public class SQLiteHandler extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        db.execSQL("DROP TABLE IF EXISTS "+TABLE_LOGIN);
+        onCreate(db);
+    }
 
+    public void addUser(String name, String email, String user_type, String uid, String created_at){
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(KEY_NAME, name);
+        values.put(KEY_EMAIL, email);
+        values.put(KEY_USER_TYPE, user_type);
+        values.put(KEY_UID, uid);
+        values.put(KEY_CREATED_AT,created_at);
+
+        long id = db.insert(TABLE_LOGIN,null, values);
+        db.close();
+        Log.d(TAG, "New user inserted into database" + id);
+    }
+
+    public HashMap<String, String> getUserDetails(){
+        HashMap<String,String> user = new HashMap<String,String>();
+        String selectQuery = "SELECT * FROM "+ TABLE_LOGIN;
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        cursor.moveToFirst();
+        if (cursor.getCount() > 0){
+            user.put("name",cursor.getString(1));
+            user.put("email",cursor.getString(2));
+            user.put("user_type",cursor.getString(3));
+            user.put("uid",cursor.getString(4));
+            user.put("created_at",cursor.getString(5));
+        }
+        cursor.close();
+        db.close();
+        Log.d(TAG, "Fetching user from Sqlite " + user.toString());
+
+        return user;
+    }
+
+    public int getRowCount(){
+        String countQuery = "SELECT * FROM " + TABLE_LOGIN;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(countQuery, null);
+        int rowCount = cursor.getCount();
+        db.close();
+        cursor.close();
+        return rowCount;
     }
 }
