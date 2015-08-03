@@ -2,7 +2,7 @@ package com.bracu.thesis.medqueue.helper;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor
+import android.content.SharedPreferences.Editor;
 import android.util.Log;
 
 /**

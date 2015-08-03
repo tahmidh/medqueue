@@ -18,12 +18,12 @@ public class SQLiteHandler extends SQLiteOpenHelper {
 
     private static final String TABLE_LOGIN = "login";
 
-    private static final Sting KEY_ID = "id";
-    private static final Sting KEY_NAME = "name";
-    private static final Sting KEY_EMAIL = "email";
-    private static final Sting KEY_USER_TYPE = "user_type"; //User type e.g doctor or patient
-    private static final Sting KEY_UID = "uid";
-    private static final Sting KEY_CREATED_AT = "created_at";
+    private static final String KEY_ID = "id";
+    private static final String KEY_NAME = "name";
+    private static final String KEY_EMAIL = "email";
+    private static final String KEY_USER_TYPE = "user_type"; //User type e.g doctor or patient
+    private static final String KEY_UID = "uid";
+    private static final String KEY_CREATED_AT = "created_at";
 
     public SQLiteHandler(Context context){
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -42,6 +42,6 @@ public class SQLiteHandler extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        
+
     }
 }
