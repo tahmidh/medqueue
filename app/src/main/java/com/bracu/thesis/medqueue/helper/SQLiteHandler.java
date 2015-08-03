@@ -96,4 +96,13 @@ public class SQLiteHandler extends SQLiteOpenHelper {
         cursor.close();
         return rowCount;
     }
+
+    public void deleteUsers(){
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        db.delete(TABLE_LOGIN,null, null);
+        db.close();
+
+        Log.d(TAG, "Deleted all user info from Sqlite");
+    }
 }
