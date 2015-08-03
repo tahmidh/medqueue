@@ -5,5 +5,7 @@ package com.bracu.thesis.medqueue.app;
  */
 public class AppConfig {
 
-    public static String URL_LOGIN = "";
+    //Server user login url
+    public static String URL_LOGIN = "http://tahmidhassan.co.nf/";
+
 }
