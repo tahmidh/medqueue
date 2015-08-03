@@ -1,7 +1,8 @@
 <resources>
     <string name="app_name">MedQueue</string>
     <string name="title_activity_login">Login</string>
-
-    <string name="hello_world">Hello world!</string>
+    <string name="hint_email">Email</string>
+    <string name="hint_password">Password</string>
+    <string name="btn_login">LOGIN</string>
     <string name="action_settings">Settings</string>
 </resources>
