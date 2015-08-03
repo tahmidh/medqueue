@@ -39,5 +39,14 @@ public class AppController extends Application{
         req.setTag(TextUtils.isEmpty(tag) ? TAG : tag);
         getRequestQueue().add(req);
     }
+    public <T> void addToRequestQueue(Request<T> req){
+        req.setTag(TAG);
+        getRequestQueue().add(req);
+    }
+    public void cancelPendingRequest(Object tag){
+        if(mRequestQueue != null){
+            mRequestQueue.cancelAll(tag);
+        }
+    }
 
 }
