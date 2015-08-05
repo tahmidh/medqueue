@@ -4,9 +4,12 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.Toast;
 
 import com.bracu.thesis.medqueue.helper.SessionManager;
 
@@ -17,6 +20,7 @@ public class LoginActivity extends Activity {
     private Button btnLogin;
     private EditText inputEmail;
     private EditText inputPassword;
+    private RadioGroup radioGroup;
     private RadioButton rbDoctor;
     private RadioButton rbPatient;
     private ProgressDialog pDialog;
@@ -30,6 +34,7 @@ public class LoginActivity extends Activity {
 
         inputEmail = (EditText) findViewById(R.id.email);
         inputPassword = (EditText) findViewById(R.id.password);
+        radioGroup = (RadioGroup) findViewById(R.id.radioGroup);
         rbDoctor = (RadioButton) findViewById(R.id.radioBtnDoctor);
         rbPatient = (RadioButton) findViewById(R.id.radioBtnPatient);
         btnLogin = (Button) findViewById(R.id.btnLogin);
@@ -51,10 +56,23 @@ public class LoginActivity extends Activity {
                 finish();
             }
         }
+        btnLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String email = inputEmail.getText().toString();
+                String password = inputPassword.getText().toString();
+                int selectedId = radioGroup.getCheckedRadioButtonId();
 
-
+                if(email.trim().length() > 0 && password.trim().length() > 0 && selectedId != -1){
+                    checkLogin(email,password,selectedId);
+                }else{
+                    Toast.makeText(getApplicationContext(),"Please enter the credentials!", Toast.LENGTH_LONG).show();
+                }
+            }
+        });
     }
 
-
-
+    private void checkLogin(String email, String password, int selectedId) {
+        
+    }
 }
