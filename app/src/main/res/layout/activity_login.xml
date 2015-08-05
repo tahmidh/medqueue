@@ -8,7 +8,7 @@
     android:gravity="center"
     android:orientation="vertical"
     android:padding="10dp"
-    tools:context="com.bracu.thesis.medqueue.Login">
+    tools:context="com.bracu.thesis.medqueue.LoginActivity">
 
 
     <LinearLayout
@@ -45,11 +45,42 @@
             android:textColor="@color/input_login"
             android:textColorHint="@color/input_login_hint"/>
 
+        <TextView
+            android:padding="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/tvLogInAs"
+            android:textColor="@color/white"
+            android:layout_marginTop="20dip"
+            android:textSize="15dp"/>
+
+        <RadioGroup
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dip">
+            <RadioButton
+                android:id="@+id/radioBtnDoctor"
+                android:background="@null"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:textSize="15dp"
+                android:text="@string/radioBtnDoc"/>
+            <RadioButton
+                android:id="@+id/radioBtnPatient"
+                android:background="@null"
+                android:layout_width="match_parent"
+                android:text="@string/radioBtnPat"
+                android:textColor="@color/white"
+                android:textSize="15dp"
+                android:layout_height="wrap_content" />
+        </RadioGroup>
+
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/btnLogin"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="20dip"
             android:background="@color/btn_login_bg"
             android:text="@string/btn_login"
             android:textColor="@color/btn_login"/>

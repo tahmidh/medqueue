@@ -24,14 +24,17 @@ public class SessionManager {
 
     private static final String KEY_IS_LOGGEDIN = "isLoggedIn";
 
+    private static final String KEY_IS_DOCTOR = "isDoctor";
+
     public SessionManager(Context context){
         this._context = context;
         pref = _context.getSharedPreferences(PREF_NAME,PRIVATE_MODE);
         editor = pref.edit();
     }
 
-    public void setLogin(boolean isLoggedIn){
+    public void setLogin(boolean isLoggedIn, boolean isDoctor){
         editor.putBoolean(KEY_IS_LOGGEDIN, isLoggedIn);
+        editor.putBoolean(KEY_IS_DOCTOR, isDoctor);
         editor.commit();
         Log.d(TAG, "User login session modified!");
     }
@@ -39,4 +42,6 @@ public class SessionManager {
     public boolean isLoggedIn(){
         return pref.getBoolean(KEY_IS_LOGGEDIN,false);
     }
+
+    public boolean isDoctor(){ return pref.getBoolean(KEY_IS_DOCTOR,false); }
 }
