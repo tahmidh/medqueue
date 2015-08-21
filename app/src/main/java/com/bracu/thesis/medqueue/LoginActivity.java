@@ -1,9 +1,21 @@
 package com.bracu.thesis.medqueue;
 
+import com.android.volley.AuthFailureError;
+import com.bracu.thesis.medqueue.app.AppConfig;
+import com.bracu.thesis.medqueue.app.AppController;
+import com.bracu.thesis.medqueue.helper.SessionManager;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -11,8 +23,10 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
-import com.bracu.thesis.medqueue.helper.SessionManager;
-
+import com.android.volley.Request.Method;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
 
 public class LoginActivity extends Activity {
 
@@ -72,7 +86,85 @@ public class LoginActivity extends Activity {
         });
     }
 
-    private void checkLogin(String email, String password, int selectedId) {
-        
+    private void checkLogin(final String email, final String password, final int selectedId) {
+        String tag_string_request = "req_login";
+
+        pDialog.setMessage("Loading..");
+        showDialog();
+
+        String type;
+        if(selectedId == R.id.radioBtnDoctor){
+            type = "doctor";
+        }else{
+            type = "patient";
+        }
+        String uri = AppConfig.URL_LOGIN+"?tag=login&email="+email+"&password="+password+"&type="+type;
+
+        StringRequest strReq = new StringRequest(Method.GET,
+                                                 uri,
+                                                 new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Log.d(TAG, "Login Response " + response.toString());
+                hideDialog();
+                try {
+                    JSONObject jObj = new JSONObject(response);
+                    boolean error = jObj.getBoolean("error");
+                    if (!error) {
+                        if (selectedId == R.id.radioBtnDoctor) {
+                            session.setLogin(true, true);
+                            Intent intent = new Intent(LoginActivity.this, DoctorActivity.class);
+                            startActivity(intent);
+                            finish();
+                        } else {
+                            session.setLogin(true, false);
+                            Intent intent = new Intent(LoginActivity.this, PatientActivity.class);
+                            startActivity(intent);
+                            finish();
+                        }
+                    } else {
+                        String errorMsg = jObj.getString("error_msg");
+                        Toast.makeText(getApplicationContext(), errorMsg+" "+"Error", Toast.LENGTH_LONG).show();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+                Log.d(TAG, "Login Error: " + volleyError.getMessage());
+                Toast.makeText(getApplicationContext(), volleyError.getMessage()+" "+"Error", Toast.LENGTH_LONG).show();
+                hideDialog();
+            }
+        });
+//        {
+//            protected Map <String, String> getParam() throws AuthFailureError {
+//                String type = "usertype";
+//                if(selectedId == R.id.radioBtnDoctor){
+//                    type = "doctor";
+//                }else{
+//                    type = "patient";
+//                }
+//                Map <String, String> params = new HashMap<String,String>();
+//                params.put("tag", "login");
+//                params.put("email", email);
+//                params.put("password", password);
+//                params.put("type","doctor");
+//                return params;
+//            }
+
+        AppController.getInstance().addToRequestQueue(strReq, tag_string_request);
+    }
+
+    private void showDialog(){
+        if(!pDialog.isShowing()){
+            pDialog.show();
+        }
+    }
+    private void hideDialog(){
+        if(pDialog.isShowing()){
+            pDialog.dismiss();
+        }
     }
 }
