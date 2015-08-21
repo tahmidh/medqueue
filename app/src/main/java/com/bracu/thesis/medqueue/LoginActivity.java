@@ -1,12 +1,8 @@
 package com.bracu.thesis.medqueue;
 
-import com.android.volley.AuthFailureError;
 import com.bracu.thesis.medqueue.app.AppConfig;
 import com.bracu.thesis.medqueue.app.AppController;
 import com.bracu.thesis.medqueue.helper.SessionManager;
-
-import java.util.HashMap;
-import java.util.Map;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -138,22 +134,6 @@ public class LoginActivity extends Activity {
                 hideDialog();
             }
         });
-//        {
-//            protected Map <String, String> getParam() throws AuthFailureError {
-//                String type = "usertype";
-//                if(selectedId == R.id.radioBtnDoctor){
-//                    type = "doctor";
-//                }else{
-//                    type = "patient";
-//                }
-//                Map <String, String> params = new HashMap<String,String>();
-//                params.put("tag", "login");
-//                params.put("email", email);
-//                params.put("password", password);
-//                params.put("type","doctor");
-//                return params;
-//            }
-
         AppController.getInstance().addToRequestQueue(strReq, tag_string_request);
     }
 
