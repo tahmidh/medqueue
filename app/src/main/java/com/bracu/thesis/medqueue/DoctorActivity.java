@@ -7,6 +7,9 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -39,6 +42,8 @@ public class DoctorActivity extends ActionBarActivity {
     private SQLiteHandler db;
     private ProgressDialog pDialog;
     public List<AppointmentModel> appoint;
+    private EditText et;
+    private Button btn;
     ListView lvappoint;
 
 
@@ -46,6 +51,9 @@ public class DoctorActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_doctor);
+
+        et = (EditText)findViewById(R.id.editText);
+        btn = (Button)findViewById(R.id.button);
 
         lvappoint = (ListView)findViewById(R.id.listView);
         txtName = (TextView) findViewById(R.id.docname);
@@ -60,12 +68,24 @@ public class DoctorActivity extends ActionBarActivity {
         appoint = new ArrayList<AppointmentModel>();
         HashMap<String, String> user = db.getUserDetails();
 
-        String name = user.get("name");
-        String uid = user.get("uid");
+        final String name = user.get("name");
+        final String uid = user.get("uid");
 
         txtName.setText("Welcome " + name + "!");
         fetchSchedule(uid);
         lvappoint.setAdapter(new AppointmentAdapter(this, appoint));
+
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String delay = et.getText().toString();
+                String uri = AppConfig.URL_LOGIN+"db_res.php?db_res.php?id="+uid+"&minute="+delay+"&docName="+name;
+//                StringRequest sReq = new StringRequest(Method.GET, uri, null,null);
+//                AppController.getInstance().addToRequestQueue(sReq);
+                Toast.makeText(getApplicationContext(),"Sending..", Toast.LENGTH_SHORT).show();
+                et.setText("");
+            }
+        });
     }
 
     private void fetchSchedule(final String uid) {
@@ -74,7 +94,7 @@ public class DoctorActivity extends ActionBarActivity {
         pDialog.setMessage("Fetching Appointment Schedule");
         showDialog();
 
-        String uri = AppConfig.URL_LOGIN+"?tag=fetchApp&uid="+uid;
+        String uri = AppConfig.URL_LOGIN+"index.php?tag=fetchApp&uid="+uid;
         StringRequest strReq = new StringRequest(Method.GET, uri,new Response.Listener<String>(){
             @Override
             public void onResponse(String s) {

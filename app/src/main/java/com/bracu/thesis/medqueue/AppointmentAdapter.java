@@ -10,9 +10,6 @@ import android.widget.TextView;
 
 import java.util.List;
 
-/**
- * Created by Tahmid on 22-Aug-15.
- */
 public class AppointmentAdapter extends ArrayAdapter<AppointmentModel>{
     LayoutInflater inflater;
 
