@@ -2,6 +2,7 @@ package com.bracu.thesis.medqueue;
 
 import com.bracu.thesis.medqueue.app.AppConfig;
 import com.bracu.thesis.medqueue.app.AppController;
+import com.bracu.thesis.medqueue.helper.SQLiteHandler;
 import com.bracu.thesis.medqueue.helper.SessionManager;
 
 import org.json.JSONException;
@@ -35,6 +36,7 @@ public class LoginActivity extends Activity {
     private RadioButton rbPatient;
     private ProgressDialog pDialog;
     private SessionManager session;
+    private SQLiteHandler db;
 
 
     @Override
@@ -53,6 +55,7 @@ public class LoginActivity extends Activity {
         pDialog.setCancelable(false);
 
         session = new SessionManager(getApplicationContext());
+        db = new SQLiteHandler(getApplicationContext());
 
         if (session.isLoggedIn()){
             if(session.isDoctor()){
@@ -105,8 +108,14 @@ public class LoginActivity extends Activity {
                 hideDialog();
                 try {
                     JSONObject jObj = new JSONObject(response);
+                    String name = jObj.getString("name");
+                    String mail = jObj.getString("email");
+                    String type = jObj.getString("type");
+                    String uid = jObj.getString("uid");
+                    Log.d(TAG, "uid:"+uid);
                     boolean error = jObj.getBoolean("error");
                     if (!error) {
+                        db.addUser(name,mail,type,uid);
                         if (selectedId == R.id.radioBtnDoctor) {
                             session.setLogin(true, true);
                             Intent intent = new Intent(LoginActivity.this, DoctorActivity.class);

@@ -1,17 +1,40 @@
 package com.bracu.thesis.medqueue;
 
+import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.bracu.thesis.medqueue.helper.SQLiteHandler;
+import com.bracu.thesis.medqueue.helper.SessionManager;
+
 public class PatientActivity extends ActionBarActivity {
+
+    SQLiteHandler db;
+    SessionManager session;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_patient);
+
+        db = new SQLiteHandler(getApplicationContext());
+        session = new SessionManager(getApplicationContext());
+
+        if(!session.isLoggedIn()){
+            logoutUser();
+        }
     }
+    private void logoutUser() {
+        session.setLogin(false, false);
+        db.deleteUsers();
+
+        Intent intent = new Intent(PatientActivity.this, LoginActivity.class);
+        startActivity(intent);
+        finish();
+    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -29,6 +52,7 @@ public class PatientActivity extends ActionBarActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_logout) {
+            logoutUser();
             return true;
         }
 

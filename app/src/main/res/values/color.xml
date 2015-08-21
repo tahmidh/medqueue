@@ -6,4 +6,5 @@
     <color name="input_login_hint">#999999</color>
     <color name="btn_login">#26ae90</color>
     <color name="btn_login_bg">#eceef1</color>
+    <color name="bg_doctorp">#eceef1</color>
 </resources>
