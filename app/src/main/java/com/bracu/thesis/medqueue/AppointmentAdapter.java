@@ -35,7 +35,7 @@ public class AppointmentAdapter extends ArrayAdapter<AppointmentModel>{
         holder.tvDate.setText(aAppoint.getDate());
         holder.tvTime.setText("At "+ aAppoint.getTime());
         holder.tvService.setText("Apt for "+aAppoint.getService_name());
-        holder.tvPatient.setText(aAppoint.getPatient());
+        holder.tvPatient.setText("With " +aAppoint.getPatient());
         return convertView;
     }
     static class ViewHolder{

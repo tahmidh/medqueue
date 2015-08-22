@@ -14,7 +14,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.toolbox.StringRequest;
 import com.bracu.thesis.medqueue.app.AppConfig;
 import com.bracu.thesis.medqueue.app.AppController;
 import com.bracu.thesis.medqueue.helper.SQLiteHandler;
@@ -37,7 +36,6 @@ public class DoctorActivity extends ActionBarActivity {
 
     private String TAG = DoctorActivity.class.getSimpleName();
     private TextView txtName;
-    private TextView txtEmail;
     private SessionManager session;
     private SQLiteHandler db;
     private ProgressDialog pDialog;
@@ -71,7 +69,7 @@ public class DoctorActivity extends ActionBarActivity {
         final String name = user.get("name");
         final String uid = user.get("uid");
 
-        txtName.setText("Welcome " + name + "!");
+        txtName.setText("Welcome " + name.toUpperCase() + "!");
         fetchSchedule(uid);
         lvappoint.setAdapter(new AppointmentAdapter(this, appoint));
 
@@ -79,11 +77,23 @@ public class DoctorActivity extends ActionBarActivity {
             @Override
             public void onClick(View v) {
                 String delay = et.getText().toString();
-                String uri = AppConfig.URL_LOGIN+"db_res.php?db_res.php?id="+uid+"&minute="+delay+"&docName="+name;
-//                StringRequest sReq = new StringRequest(Method.GET, uri, null,null);
-//                AppController.getInstance().addToRequestQueue(sReq);
+                String uri = AppConfig.URL_LOGIN+"db_res.php?id="+uid+"&minute="+delay+"&docName="+name;
+                StringRequest sReq = new StringRequest(Method.GET, uri,
+                        new Response.Listener<String>() {
+                            @Override
+                            public void onResponse(String s) {
+                                Log.d(TAG, "Response " + s.toString());
+                            }
+                        }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError volleyError) {
+                        Log.d(TAG, "Response " + volleyError.toString());
+                    }
+                });
+                AppController.getInstance().addToRequestQueue(sReq);
                 Toast.makeText(getApplicationContext(),"Sending..", Toast.LENGTH_SHORT).show();
                 et.setText("");
+
             }
         });
     }
